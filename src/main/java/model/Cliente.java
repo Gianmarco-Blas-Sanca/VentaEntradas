@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class Cliente extends Persona {
     private int puntos;
     
-    // Composición: Un cliente tiene una tarjeta (1 a 1)
+    
     private Tarjeta tarjeta;
-    // Asociación: Un cliente puede tener múltiples ventas (1 a *)
+    
     private List<Venta> ventas;
 
     public Cliente() {
@@ -22,6 +22,6 @@ public class Cliente extends Persona {
     }
 
     public void ingresar(String usuario, String clave) {
-        // Lógica de ingreso
+        
     }
 }
