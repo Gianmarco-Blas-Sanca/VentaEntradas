@@ -14,7 +14,7 @@ public class Zona {
     private int capacidad;
     private int precio;
     
-    // Composición: Una zona contiene múltiples entradas (1 a *)
+    
     private List<Entrada> entradas;
 
     public Zona() {
