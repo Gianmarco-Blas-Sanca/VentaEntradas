@@ -17,6 +17,6 @@ public class Tarjeta {
     private int CVV;
 
     public void method() {
-        // Método genérico indicado en el diagrama
+       
     }
 }
