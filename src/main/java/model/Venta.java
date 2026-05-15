@@ -16,7 +16,7 @@ public class Venta {
     private Date fecha;
     private int monto;
     
-    // Asociación: Una venta tiene entre 1 y 4 entradas
+    
     private List<Entrada> entradas;
 
     public Venta() {
