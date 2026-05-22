@@ -66,14 +66,13 @@ public class VistaConsola {
 
     private void mostrarZonas() {
         System.out.println("\n--- ZONAS DEL CONCIERTO ---");
-        // El try-catch aquí maneja posibles errores de puntero si el concierto no tiene zonas inicializadas
         try {
-            System.out.println("Concierto: " + conciertoActual.getNombre()); // Falta getter en modelo, asumiendo su creación
-            // Nota: Debes asegurarte de añadir el método getZonas() en tu clase Concierto.java
-            // for (Zona z : conciertoActual.getZonas()) {
-            //     System.out.println("- " + z.getNombre() + " | Precio: S/" + z.getPrecio());
-            // }
-            System.out.println("(Implementar iteración de zonas mediante getZonas() en Concierto.java)");
+            System.out.println("Concierto: " + conciertoActual.getNombre());
+            
+            for (Zona z : conciertoActual.getZonas()) {
+                 System.out.println("- " + z.getNombre() + " | Precio: S/" + z.getPrecio());
+            }
+            
         } catch (Exception e) {
             System.err.println("No se pudieron cargar las zonas: " + e.getMessage());
         }
