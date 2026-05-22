@@ -15,9 +15,10 @@ import java.util.ArrayList;
 public class Venta {
     private Date fecha;
     private int monto;
-    
-    
+    private Tarjeta tarjeta; 
+    private Zona zona;
     private List<Entrada> entradas;
+    
 
     public Venta() {
         this.entradas = new ArrayList<>();

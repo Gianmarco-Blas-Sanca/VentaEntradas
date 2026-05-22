@@ -30,21 +30,25 @@ public class Zona {
     }
 
     public Entrada[] venderEntrada(int numero) {
-        try {
+       try {
             // Validación de límites lógicos
             if (numero <= 0) {
                 throw new IllegalArgumentException("El número de entradas a vender debe ser mayor a 0.");
             }
+            //Validación de la regla de negocio (máximo 4)
+            if (numero > 4) {
+                throw new IllegalArgumentException("Regla de negocio: Una venta no puede exceder las 4 entradas.");
+            }
             if (numero > this.capacidad) {
-                throw new IllegalArgumentException("El número solicitado excede la capacidad disponible.");
+                throw new IllegalArgumentException("El número solicitado excede la capacidad disponible de la zona.");
             }
             
-            // Lógica simulada de venta
-            System.out.println("Vendiendo " + numero + " entradas.");
+            this.capacidad -= numero; 
+            
+            System.out.println("Vendiendo " + numero + " entradas. Capacidad restante: " + this.capacidad);
             return new Entrada[numero];
             
         } catch (IllegalArgumentException e) {
-            // Captura del error y retorno de un arreglo vacío por seguridad
             System.err.println("Error procesando la venta: " + e.getMessage());
             return new Entrada[0];
         }
