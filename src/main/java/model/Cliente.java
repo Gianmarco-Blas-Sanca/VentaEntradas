@@ -22,6 +22,17 @@ public class Cliente extends Persona {
     }
 
     public void ingresar(String usuario, String clave) {
-        
+        try {
+            // Validación de parámetros de entrada
+            if (usuario == null || usuario.trim().isEmpty() || clave == null || clave.trim().isEmpty()) {
+                throw new IllegalArgumentException("El usuario y la clave no pueden estar vacíos.");
+            }
+            // Lógica de ingreso 
+            System.out.println("Ingreso exitoso para el usuario: " + usuario);
+            
+        } catch (IllegalArgumentException e) {
+            // Manejo de la excepción capturada
+            System.err.println("Error de validación al ingresar: " + e.getMessage());
+        }
     }
 }

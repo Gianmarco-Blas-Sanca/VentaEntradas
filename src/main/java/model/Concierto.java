@@ -21,7 +21,20 @@ public class Concierto {
     }
 
     public boolean agregarZona(String nombre) {
-        return false;
+        try {
+            // Validación para evitar NullPointerException
+            if (nombre == null) {
+                throw new NullPointerException("El nombre de la zona no puede ser nulo.");
+            }
+            // Lógica simulada para agregar la zona
+            System.out.println("Zona agregada: " + nombre);
+            return true;
+            
+        } catch (NullPointerException e) {
+            // Se atrapa la excepción y se retorna false para indicar fallo
+            System.err.println("Excepción capturada: " + e.getMessage());
+            return false;
+        }
     }
 
     public boolean eliminarZona(String nombre) {
