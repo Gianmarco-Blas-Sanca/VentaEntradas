@@ -15,7 +15,16 @@ public class Persona {
     protected String contrasena; 
 
     public boolean registrarTarjeta() {
-        return false;
+        try {
+            if (this.dni == null || this.dni.trim().isEmpty()) {
+                throw new IllegalStateException("No se puede registrar una tarjeta sin un DNI asociado.");
+            }
+            System.out.println("Tarjeta registrada correctamente.");
+            return true;
+        } catch (IllegalStateException e) {
+            System.err.println("Error en Persona (registrarTarjeta): " + e.getMessage());
+            return false;
+        }
     }
 
     public boolean eliminarTarjeta() {
@@ -27,6 +36,15 @@ public class Persona {
     }
 
     public boolean comprar() {
-        return false;
+        try {
+            if (this.contrasena == null || this.contrasena.isEmpty()) {
+                throw new IllegalStateException("Operación denegada: El usuario no tiene una contraseña establecida.");
+            }
+            System.out.println("Compra procesada con éxito.");
+            return true;
+        } catch (IllegalStateException e) {
+            System.err.println("Error en Persona (comprar): " + e.getMessage());
+            return false;
+        }
     }
 }

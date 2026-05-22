@@ -24,6 +24,19 @@ public class Venta {
     }
 
     public boolean anular() {
-        return false;
+       try {
+            if (this.monto <= 0) {
+                throw new IllegalArgumentException("No se puede anular una venta con un monto menor o igual a cero.");
+            }
+            if (this.entradas == null || this.entradas.isEmpty()) {
+                throw new NullPointerException("No se puede anular una venta que no contiene entradas registradas.");
+            }
+            
+            System.out.println("Venta anulada con éxito.");
+            return true;
+        } catch (IllegalArgumentException | NullPointerException e) {
+            System.err.println("Error al intentar anular la venta: " + e.getMessage());
+            return false;
+        }
     }
 }
