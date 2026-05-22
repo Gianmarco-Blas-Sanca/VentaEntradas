@@ -20,24 +20,23 @@ public class Venta {
     private List<Entrada> entradas;
     
 
-    public Venta() {
-        this.entradas = new ArrayList<>();
+    public Venta(Zona zona, List<Entrada> entradas, Tarjeta tarjeta) {
+        this.fecha = new Date();
+        this.zona = zona;
+        this.entradas = entradas;
+        this.tarjeta = tarjeta;
+        this.monto = zona.getPrecio() * entradas.size();
     }
 
-    public boolean anular() {
-       try {
-            if (this.monto <= 0) {
-                throw new IllegalArgumentException("No se puede anular una venta con un monto menor o igual a cero.");
-            }
-            if (this.entradas == null || this.entradas.isEmpty()) {
-                throw new NullPointerException("No se puede anular una venta que no contiene entradas registradas.");
-            }
-            
-            System.out.println("Venta anulada con éxito.");
-            return true;
-        } catch (IllegalArgumentException | NullPointerException e) {
-            System.err.println("Error al intentar anular la venta: " + e.getMessage());
-            return false;
+    public void anular() throws IllegalStateException{
+        if (this.entradas == null || this.entradas.isEmpty()) {
+            throw new IllegalStateException("No se puede anular una venta sin entradas.");
         }
+        for (Entrada e : entradas) {
+            e.liberar();
+        }
+        this.monto = 0;
+          
     }
+    public int getMonto() { return monto; }
 }

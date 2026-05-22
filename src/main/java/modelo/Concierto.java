@@ -12,32 +12,30 @@ import java.util.ArrayList;
  */
 public class Concierto {
     private String nombre;
-    private Date fecha;
-    
+    private Date fecha; 
     private List<Zona> zonas;
 
-    public Concierto() {
+    public Concierto(String nombre, Date fecha) {
+        this.nombre = nombre;
+        this.fecha = fecha;
         this.zonas = new ArrayList<>();
     }
 
-    public boolean agregarZona(String nombre) {
-        try {
-            // Validación para evitar NullPointerException
-            if (nombre == null) {
-                throw new NullPointerException("El nombre de la zona no puede ser nulo.");
-            }
-            // Lógica simulada para agregar la zona
-            System.out.println("Zona agregada: " + nombre);
-            return true;
-            
-        } catch (NullPointerException e) {
-            // Se atrapa la excepción y se retorna false para indicar fallo
-            System.err.println("Excepción capturada: " + e.getMessage());
-            return false;
+    public void agregarZona(Zona zona) {
+        if (zona == null) {
+            throw new NullPointerException("La zona no puede ser nula.");
         }
+        this.zonas.add(zona);
     }
 
-    public boolean eliminarZona(String nombre) {
-        return false;
+    public Zona buscarZona(String nombreZona) throws IllegalArgumentException {
+        for (Zona z : zonas) {
+            if (z.getNombre().equalsIgnoreCase(nombreZona)) {
+                return z;
+            }
+        }
+        throw new IllegalArgumentException("La zona especificada no existe.");
     }
+    public String getNombre() { return nombre; }
+    public List<Zona> getZonas() { return zonas; }
 }
