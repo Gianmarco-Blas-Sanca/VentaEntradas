@@ -13,7 +13,22 @@ public class Entrada {
     private String estado;
 
     public boolean vender() {
-        return false;
+        try {
+            // Validación de estado lógico
+            if ("VENDIDA".equals(this.estado)) {
+                throw new IllegalStateException("La operación no es válida: la entrada ya está vendida.");
+            }
+            
+            // Lógica de venta
+            this.estado = "VENDIDA";
+            System.out.println("Entrada " + this.numero + " vendida con éxito.");
+            return true;
+            
+        } catch (IllegalStateException e) {
+            // Captura del error de estado
+            System.err.println("Excepción capturada al vender: " + e.getMessage());
+            return false;
+        }
     }
 
     public boolean liberar() {
