@@ -3,23 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package vista;
+
 import controlador.ControladorVentas;
 import modelo.Cliente;
 import modelo.Concierto;
 import modelo.Tarjeta;
 import modelo.Zona;
+import modelo.Venta;
+import excepciones.VentaExcepcion;
 import java.util.Scanner;
-/**
- *
- * @author Usuario
- */
+
 public class VistaConsola {
     private ControladorVentas controlador;
     private Concierto conciertoActual;
     private Scanner scanner;
-    private Cliente clienteSesion; // Simula la sesión del usuario
+    private Cliente clienteSesion;
 
-    // Constructor que inyecta las dependencias del Controlador y el Modelo
     public VistaConsola(ControladorVentas controlador, Concierto concierto) {
         this.controlador = controlador;
         this.conciertoActual = concierto;
@@ -59,7 +58,6 @@ public class VistaConsola {
     }
 
     private void simularInicioSesion() {
-        // Para simplificar la prueba del MVC, creamos un cliente temporal en memoria
         this.clienteSesion = new Cliente("Gianmarco", "Blas", "12345678", "clave123");
         System.out.println("Sesión iniciada exitosamente para: " + clienteSesion.getDni());
     }
@@ -68,11 +66,9 @@ public class VistaConsola {
         System.out.println("\n--- ZONAS DEL CONCIERTO ---");
         try {
             System.out.println("Concierto: " + conciertoActual.getNombre());
-            
             for (Zona z : conciertoActual.getZonas()) {
                  System.out.println("- " + z.getNombre() + " | Precio: S/" + z.getPrecio());
             }
-            
         } catch (Exception e) {
             System.err.println("No se pudieron cargar las zonas: " + e.getMessage());
         }
@@ -86,14 +82,12 @@ public class VistaConsola {
 
         System.out.println("\n--- PROCESO DE COMPRA ---");
         try {
-            // 1. Captura de datos de la zona y entradas
             System.out.print("Ingrese el nombre exacto de la Zona (ej. VIP, General): ");
             String nombreZona = scanner.nextLine();
 
             System.out.print("Ingrese la cantidad de entradas (Máximo 4): ");
             int cantidad = Integer.parseInt(scanner.nextLine());
 
-            // 2. Captura de datos de la tarjeta obligatoria
             System.out.println("--- Ingrese los datos de su tarjeta bancaria ---");
             System.out.print("Número de tarjeta: ");
             int numTarjeta = Integer.parseInt(scanner.nextLine());
@@ -109,13 +103,18 @@ public class VistaConsola {
 
             Tarjeta tarjetaCliente = new Tarjeta(numTarjeta, titular, fecha, cvv);
 
-            // 3. Delegación al Controlador
-            // La vista no decide si la venta es válida, solo pasa los datos al controlador.
-            controlador.procesarCompra(clienteSesion, nombreZona, cantidad, tarjetaCliente);
+            // Delegación al Controlador
+            Venta ventaRealizada = controlador.procesarCompra(clienteSesion, nombreZona, cantidad, tarjetaCliente);
+            
+            // La vista muestra el éxito
+            System.out.println("\n>>> ÉXITO: Compra finalizada correctamente.");
+            System.out.println(">>> Total pagado: S/ " + ventaRealizada.getMonto());
 
         } catch (NumberFormatException e) {
-            // Captura errores si el usuario escribe texto en lugar de números
-            System.err.println("Error de formato: Asegúrese de ingresar valores numéricos válidos en Cantidad, Tarjeta y CVV.");
+            System.err.println("\n>>> ERROR DE FORMATO: Asegúrese de ingresar valores numéricos válidos en Cantidad, Tarjeta y CVV.");
+        } catch (VentaExcepcion e) {
+            // La vista maneja el error de negocio devuelto por el controlador
+            System.err.println("\n>>> ERROR EN LA TRANSACCIÓN: " + e.getMessage());
         }
     }
 }

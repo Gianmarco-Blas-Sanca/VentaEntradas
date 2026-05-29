@@ -3,12 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controlador;
+
 import modelo.*;
+import excepciones.VentaExcepcion;
 import java.util.List;
-/**
- *
- * @author Usuario
- */
+
 public class ControladorVentas {
     private Concierto conciertoActual;
 
@@ -16,8 +15,7 @@ public class ControladorVentas {
         this.conciertoActual = concierto;
     }
 
-    public void procesarCompra(Cliente cliente, String nombreZona, int cantidad, Tarjeta tarjeta) {
-        // AQUÍ ES DONDE DEBE IR EL TRY-CATCH
+    public Venta procesarCompra(Cliente cliente, String nombreZona, int cantidad, Tarjeta tarjeta) throws VentaExcepcion {
         try {
             // 1. Validaciones previas
             tarjeta.validarGarantia();
@@ -26,26 +24,20 @@ public class ControladorVentas {
             // 2. Localizar recursos
             Zona zonaSeleccionada = conciertoActual.buscarZona(nombreZona);
 
-            // 3. Ejecutar transacción en el modelo (lanzará error si supera 4 o no hay aforo)
+            // 3. Ejecutar transacción
             List<Entrada> entradasCompradas = zonaSeleccionada.venderEntrada(cantidad);
 
             // 4. Consolidar la venta
             Venta nuevaVenta = new Venta(zonaSeleccionada, entradasCompradas, tarjeta);
             cliente.agregarVenta(nuevaVenta);
 
-            System.out.println(">>> ÉXITO: Venta procesada. Total pagado: S/ " + nuevaVenta.getMonto());
+            return nuevaVenta; // Se devuelve la venta en lugar de imprimir
 
-        } catch (IllegalArgumentException e) {
-            // Captura errores de validación de datos (tarjeta mala, más de 4 entradas)
-            System.err.println(">>> ERROR DE DATOS: " + e.getMessage());
-            
-        } catch (IllegalStateException e) {
-            // Captura errores de estado del sistema (capacidad llena)
-            System.err.println(">>> ERROR DE NEGOCIO: " + e.getMessage());
-            
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            // Captura errores de validación de datos o de estado y los sube a la capa superior
+            throw new VentaExcepcion(e.getMessage());
         } catch (Exception e) {
-            // Intercepta cualquier fallo crítico no contemplado
-            System.err.println(">>> ERROR CRÍTICO DEL SISTEMA: " + e.getMessage());
+            throw new VentaExcepcion("Error crítico del sistema: " + e.getMessage());
         }
     }
 }

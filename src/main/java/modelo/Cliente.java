@@ -5,16 +5,10 @@
 package modelo;
 import java.util.List;
 import java.util.ArrayList;
-/**
- *
- * @author Usuario
- */
+
 public class Cliente extends Persona {
     private int puntos;
-    
-    
     private Tarjeta tarjeta;
-    
     private List<Venta> ventas;
 
     public Cliente(String nombres, String apellidos, String dni, String contrasena) {
@@ -23,11 +17,37 @@ public class Cliente extends Persona {
         this.puntos = 0;
     }
 
-    public void registrarTarjeta(Tarjeta tarjeta) throws IllegalArgumentException {
+    // Implementación de métodos abstractos
+    @Override
+    public boolean registrarTarjeta(Tarjeta tarjeta) throws IllegalArgumentException {
         if (this.dni == null || this.dni.trim().isEmpty()) {
             throw new IllegalArgumentException("No se puede registrar una tarjeta sin un DNI asociado.");
         }
         this.tarjeta = tarjeta;
+        return true;
+    }
+
+    @Override
+    public boolean eliminarTarjeta() {
+        if (this.tarjeta != null) {
+            this.tarjeta = null;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean anularVenta(Venta venta) {
+        if (ventas.contains(venta)) {
+            venta.anular();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean comprar() {
+        return this.tarjeta != null; 
     }
 
     public void ingresar(String usuario, String clave) throws SecurityException {
